@@ -38,7 +38,7 @@ public class UseBlockHandler implements UseBlockCallback {
 
             // Get the loot tables for the biome
             List<Identifier> tables = ChestLootConfig.getLootForBiome(biomeId);
-            if (tables == null) {
+            if (tables == null || tables.isEmpty()) {
                 return ActionResult.PASS;
             }
             ChestLoot.LOGGER.debug("Biome: {} Tables: {}", biomeId, tables);
