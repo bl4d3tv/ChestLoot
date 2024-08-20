@@ -9,10 +9,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +22,13 @@ public class ChestLootConfig {
 
     public static void load() {
         File file = FabricLoader.getInstance().getConfigDir().resolve("chestloot.json").toFile();
+        Gson gson = new Gson();
+        lootTables.clear();
 
         // Load chestloot.json
         if (file.exists()) {
-            Gson gson = new Gson();
             try (FileReader reader = new FileReader(file)) {
                 JsonObject json = gson.fromJson(reader, JsonObject.class);
-                lootTables.clear();
                 CODEC.parse(JsonOps.INSTANCE, json).resultOrPartial(ChestLoot.LOGGER::error).ifPresent(lootTables::putAll);
                 ChestLoot.LOGGER.info("Loaded chestloot.json");
             } catch (IOException e) {
@@ -45,7 +42,13 @@ public class ChestLootConfig {
                     return;
                 }
 
-                Files.copy(is, file.toPath());
+                // Read to a buffer to reuse the input stream
+                byte[] buffer = is.readAllBytes();
+
+                Files.copy(new ByteArrayInputStream(buffer), file.toPath());
+
+                JsonObject json = gson.fromJson(new InputStreamReader(new ByteArrayInputStream(buffer)), JsonObject.class);
+                CODEC.parse(JsonOps.INSTANCE, json).resultOrPartial(ChestLoot.LOGGER::error).ifPresent(lootTables::putAll);
             } catch (IOException e) {
                 ChestLoot.LOGGER.error("Failed to write default chestloot.json", e);
             }
