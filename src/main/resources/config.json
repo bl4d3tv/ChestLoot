@@ -1,0 +1,5 @@
+{
+  "default": [],
+  "minecraft:plains": ["minecraft:chests/nether_bridge", "minecraft:chests/stronghold_corridor"],
+  "minecraft:forest": ["minecraft:chests/ruined_portal", "minecraft:chests/underwater_ruin_big"]
+}

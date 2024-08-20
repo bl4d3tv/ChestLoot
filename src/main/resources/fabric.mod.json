@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "chestloot",
+  "version": "${version}",
+  "name": "ChestLoot",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/chestloot/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.bl4d3tv.chestloot.ChestLoot"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "mixins": [
+    "chestloot.mixins.json"
+  ]
+}
